@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+	<meta charset="utf-8" />
+        
+    <meta name="viewport" content="width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.3.1.min.js"></script>
+
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/comuneo.js"></script>		
+		
+	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	
+	<script type="text/javascript" src="js/kenburns.js"></script>
+	
+	<style type="text/css">
+		#map {
+  height: 100%;
+  position: absolute; 
+  top: 0; 
+  bottom: -200px; 
+  left: 0; 
+  right: 0; 
+  z-index: 0;
+}
+ 
+
+
+#info{
+color : white;
+ position: relative;
+float: right;
+opacity:0.6;
+background-color : blue;
+  width : 200px;
+  height :100px;
+z-index: 100;
+
+}		
+    </style>
+	
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 	
+	
+<script type="text/javascript">
+// --> redirection vers la page index
+function indexHTML(){
+window.location = "index.html";
+}
+</script>
+
+<script>
+
+// --- declaration des variables ---
+
+	var map,
+			$latitude,
+			$longitude,
+			$positionIni = new google.maps.LatLng(48.858565, 2.347198),
+			$positionActuel,
+			$zoom = 16;
+			
+	var $infos="message init";
+	
+// Coordonnées GPS des marker a visualiser sur la carte 	
+ var locations = [
+      ['marker 1', 48.858530, 2.3471150, 4],
+      ['marker 2',48.858595, 2.347100, 5],
+      ['marker 3',58540, 2.34720, , 3]
+      
+    ];
+
+// --- AFFICHAGE DE LA CARTE ---
+
+function affMap(){
+
+	var watchID=navigator.geolocation.watchPosition(successCallback, null,{enableHighAccuracy:true});
+	initMap($positionIni);
+	
+	function successCallback(position){
+		$positionActuel = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		$longitude = position.coords.longitude;
+		$latitude = position.coords.latitude;
+		$infos="message2";
+		aff($infos);
+		initMap($positionActuel); 
+		
+	} //successCallback()
+}
+
+// --- Affiche les infos sur la carte ---
+function aff($infos){
+    var div = document.getElementById("textDiv");
+	div.textContent = $infos;
+    var text = div.textContent;
+}
+
+
+// --- Creer une carte avec la position passé en parametre  ----
+
+function initMap($pos){
+	
+	var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: $zoom,
+      center: $pos,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+	  scaleControl: true,
+	  panControl: true
+    });	
+	var infowindow = new google.maps.InfoWindow();
+	
+// --- affichage des markers ---
+	var marker;
+		 marker = new google.maps.Marker({
+			position: $pos  ,
+			title: "vous etes ici",
+			map: map
+			});
+			
+	var marker1;
+	 marker1 = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[1][1], locations[1][2]),
+        map: map
+      });
+	  
+	// var homeLatlng = new google.maps.LatLng(locations[1][1], locations[1][2]);
+	var marker2;
+	marker2 = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[2][1], locations[2][2]),
+        map: map
+      });
+	
+	
+	 
+}
+
+</script>
+	<title>Comunapp</title>
+	
+</head>
+
+
+	
+<body onload="affMap()" >
+
+
+<div id="main" data-role="page">
+
+
+
+
+<div data-role="header" data-fullscreen="true" data-theme="b">
+        <div class="colonneH"><a href="index.html" data-transition="none"><img class="img1" src="img/BigLogo.png"/></a></div>
+		<div class="colonneH1"><a href="credit.html" ata-transition="none"><img class="img1" src="img/engrenage.png"/></a></div>  
+        <div class="colonneH1"><div class="colonneHbis"><div  align="right" id="starC"><b>10</b></div></div><center><img class="img1" src="img/star.png"/></center></div>
+</div>
+	
+
+
+	
+		
+	
+   
+ <div id="info">  
+ <p> information </p>
+ <div id="textDiv"></div>
+
+ </div> 
+    
+    
+ <div id="conteneur" data-role="content">
+
+ 
+
+ 
+	<center>
+	<div id="map">
+	</div>	
+	</center>
+	
+</div>
+	
+	
+ <div data-role="footer" data-position="fixed">
+		<center>
+		    <div class="colonnePied"><a href="" onclick="indexHTML()" data-transition="none"><img src="img/homeJ.png" height="30" width="30"/></a></div>   
+		    <div class="colonnePied"><img src="img/news.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><img src="img/sortir.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><img src="img/pratique.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><a href="signaler.html" data-transition="none"><img src="img/signaler.png" height="30" width="30"/></a></div>  
+		    <div class="colonnePied"><a href="urgence.html" data-transition="none"><img src="img/urgence.png" height="30" width="30"/></a></div>  
+		    <div class="colonnePied"><img src="img/mairie.png" height="30" width="30"/></div>  
+		</center>
+</div>
+    
+	
+	
+</div>	
+
+<script type="text/javascript">
+	app.initialize();
+</script>
+		
+  
+</body>
+
+</html>
+ 
+
+
+	
+</script>
+	
+	<title>Comunapp</title>
+	
+</head>
+
+
+	
+<body>
+
+
+<div id="main" data-role="page">
+
+
+
+
+<div data-role="header" data-fullscreen="true" data-theme="b">
+        <div class="colonneH"><a href="index.html" data-transition="none"><img class="img1" src="img/BigLogo.png"/></a></div>
+		<div class="colonneH1"><a href="credit.html" ata-transition="none"><img class="img1" src="img/engrenage.png"/></a></div>  
+        <div class="colonneH1"><div class="colonneHbis"><div  align="right" id="starC"><b>10</b></div></div><center><img class="img1" src="img/star.png"/></center></div>
+</div>
+	
+
+
+	
+		
+	
+    
+    
+    
+ <div id="conteneur" data-role="content">
+
+ <button onclick="affMap()">Traquer</button>
+ 
+ <!--  //  Affiche longitute et latitude dans la page HTML ----
+ 
+ <button onclick="getLatitude()">get Latitude</button>
+ 
+ <p>Latitude : </p>
+	<INPUT type="text" id="latitude" value="">
+<p>Longitude : </p>
+	<INPUT type="text" id="longitude" value="">
+ ---------------------------------------------------------------->
+ 
+	<center>
+	<div id="map">
+	</div>	
+	</center>
+	
+</div>
+	
+	
+ <div data-role="footer" data-position="fixed">
+		<center>
+		    <div class="colonnePied"><a href="" onclick="indexHTML()" data-transition="none"><img src="img/homeJ.png" height="30" width="30"/></a></div>   
+		    <div class="colonnePied"><img src="img/news.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><img src="img/sortir.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><img src="img/pratique.png" height="30" width="30"/></div>  
+		    <div class="colonnePied"><a href="signaler.html" data-transition="none"><img src="img/signaler.png" height="30" width="30"/></a></div>  
+		    <div class="colonnePied"><a href="urgence.html" data-transition="none"><img src="img/urgence.png" height="30" width="30"/></a></div>  
+		    <div class="colonnePied"><img src="img/mairie.png" height="30" width="30"/></div>  
+		</center>
+</div>
+    
+	
+	
+</div>	
+
+<script type="text/javascript">
+	app.initialize();
+</script>
+		
+  
+</body>
+
+</html>
