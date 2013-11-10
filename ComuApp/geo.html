@@ -1,4 +1,5 @@
 <html>
+    
 <head>
 	<meta charset="utf-8" />
         
@@ -30,11 +31,12 @@
 
 
 #info{
-color : white;
+color :black ;
+    
  position: relative;
 float: right;
 opacity:0.6;
-background-color : blue;
+background-color : white;
   width : 200px;
   height :100px;
 z-index: 100;
@@ -75,26 +77,30 @@ window.location = "index.html";
 // --- AFFICHAGE DE LA CARTE ---
 
 function affMap(){
-
-	var watchID=navigator.geolocation.watchPosition(successCallback, null,{enableHighAccuracy:true});
+    aff($infos);
+	var watchID=navigator.geolocation.watchPosition(successCallback, null);
 	initMap($positionIni);
 	
 	function successCallback(position){
+       
+		aff($infos);
 		$positionActuel = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		$longitude = position.coords.longitude;
 		$latitude = position.coords.latitude;
-		$infos="message2";
-		aff($infos);
+		//$positionActuel = new google.maps.LatLng(41.875696,-87.624207);
 		initMap($positionActuel); 
-		
+		 $infos="message2";
 	} //successCallback()
-}
 
+   }
+
+    
+    
 // --- Affiche les infos sur la carte ---
 function aff($infos){
     var div = document.getElementById("textDiv");
 	div.textContent = $infos;
-    var text = div.textContent;
+    //var text = div.textContent;
 }
 
 
@@ -107,33 +113,33 @@ function initMap($pos){
       center: $pos,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
 	  scaleControl: true,
-	  panControl: true
-    });	
-	var infowindow = new google.maps.InfoWindow();
+	  panControl: false,
+      zoomControl: false,
+      streetViewControl: false,
+      overviewMapControl:  false,
+      
+       
+        
+    });
+    
+    // fonction qui affiche le contour en fonction du fichier situer sur un serveur 
+   
+   // var ctaLayer = new google.maps.KmlLayer({ url: 'http://sylnebert.openrsi.fr/cta.kml' });
+     //ctaLayer.setMap(map);
+ 
+  
+	
+    
+    
+	//var infowindow = new google.maps.InfoWindow();
 	
 // --- affichage des markers ---
-	var marker;
-		 marker = new google.maps.Marker({
+	//var marker;
+		var marker = new google.maps.Marker({
 			position: $pos  ,
 			title: "vous etes ici",
 			map: map
 			});
-			
-	var marker1;
-	 marker1 = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[1][1], locations[1][2]),
-        map: map
-      });
-	  
-	// var homeLatlng = new google.maps.LatLng(locations[1][1], locations[1][2]);
-	var marker2;
-	marker2 = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[2][1], locations[2][2]),
-        map: map
-      });
-	
-	
-	 
 }
 
 </script>
@@ -153,13 +159,20 @@ function initMap($pos){
 
 <div id="conteneur" data-role="content">
 	<div id="info">  
-	<p> information </p>
+        <center>
+         <p> Information </p>   
+        
+	
 	<div id="textDiv"></div>
+            </center>
+    
 	</div> 
        
 	<center>
 	<div id="map">
-	</div>	
+	</div>
+  
+        
 	</center>	
 </div>
 
@@ -175,5 +188,5 @@ function initMap($pos){
 		</center>
 </div>	
 
-
+</div>
 </html>

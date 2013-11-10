@@ -11,8 +11,8 @@
 		var image_paths = options.images;		
 		var display_time = options.display_time || 7000;
 		var fade_time = Math.min(display_time / 2, options.fade_time || 1000);
-		var solid_time = display_time - (fade_time * 2);
-		var fade_ratio = fade_time - display_time
+		
+		
 		var frames_per_second = options.frames_per_second || 30;		
 		var frame_time = (1 / frames_per_second) * 1000;
 		var zoom_level = 1 / (options.zoom || 2);
@@ -56,21 +56,6 @@
 					cy + scaleh/2];		
 		}
 		
-		function fit(src_w, src_h, dst_w, dst_h) {
-			// Finds the best-fit rect so that the destination can be covered
-			var src_a = src_w / src_h;
-			var dst_a = dst_w / dst_h;			
-			var w = src_h * dst_a;
-			var h = src_h;						
-			if (w > src_w)
-			{
-				var w = src_w;
-				var h = src_w / dst_a;
-			}						
-			var x = (src_w - w) / 2;
-			var y = (src_h - h) / 2;
-			return [x, y, x+w, y+h]; 
-		}				
 		
 		function get_image_info(image_index, load_callback) {
 			// Gets information structure for a given index
@@ -85,7 +70,7 @@
 					var iw = image.width;
 					var ih = image.height;
 										 				
-					var r1 = fit(iw, ih, width, height);;
+					var r1 = fit(iw, ih, width, height);
 					var r2 = scale_rect(r1, zoom_level);
 										
 					var align_x = Math.floor(Math.random() * 3) - 1;
