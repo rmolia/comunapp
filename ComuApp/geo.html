@@ -66,7 +66,7 @@ window.location = "index.html";
 			$positionActuel,
         	$zoom = 17;
 			
-	var $infos="message init";
+	var $infos="Recherche nom de la localité";
 	
 // Coordonnées GPS des marker a visualiser sur la carte 	
  var locations = [
@@ -80,7 +80,7 @@ window.location = "index.html";
 
 function affMap(){
     aff($infos);
-	var watchID=navigator.geolocation.watchPosition(successCallback, null);
+	var watchID=navigator.geolocation.watchPosition(successCallback,null);
 	initMap($positionIni);
 	
 	function successCallback(position){
@@ -91,7 +91,7 @@ function affMap(){
 		$latitude = position.coords.latitude;
 		//$positionActuel = new google.maps.LatLng(41.875696,-87.624207);
 		initMap($positionActuel); 
-		 $infos="message2";
+		 $infos= getCommune($latitude,$longitude);
 	} //successCallback()
 
    }
@@ -101,7 +101,7 @@ function affMap(){
 // --- Affiche les infos sur la carte ---
 function aff($infos){
     var div = document.getElementById("textDiv");
-    $infos=$latitude+" "+$longitude,
+    
 	div.textContent = $infos;
     
     
@@ -121,9 +121,6 @@ function initMap($pos){
       zoomControl: false,
       streetViewControl: false,
       overviewMapControl:  false,
-      
-       
-        
     });
     
     // fonction qui affiche le contour en fonction du fichier situer sur un serveur 
@@ -145,7 +142,32 @@ function initMap($pos){
 			map: map
 			});
 }
-
+    
+ // ---   fonction qui retourne le nom de la commune en fonction des coordonées GPS passé en parametre   
+ function getCommune(lati,longi) {
+  var geocoder;
+  var map;
+  geocoder = new google.maps.Geocoder();
+  var lat = parseFloat(lati);
+  var lng = parseFloat(longi);
+  var latlng = new google.maps.LatLng(lat, lng);
+      
+  geocoder.geocode({'latLng': latlng}, function(results, status) {
+  
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[2]) {
+		commune = results[2].formatted_address;
+      } else {
+		commune='none';
+      }
+      } else {
+	  commune='error';
+      }
+    });
+ return commune;
+}
+    
+    
 </script>
 	<title>Comunapp</title>
 	
@@ -164,8 +186,8 @@ function initMap($pos){
 <div id="conteneur" data-role="content">
 	<div id="info">  
         <center>
-         <p> Information </p>   
-        
+         Informations<br/>  
+        <br />
 	
             
             
